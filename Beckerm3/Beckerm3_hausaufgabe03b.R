@@ -1,6 +1,6 @@
 # Hausaufgabe 03
-# Phillip Alday <phillip.alday@staff.uni-marburg.de>
-# 2014-04-23
+# Martin Becker <Beckerm3@students.uni-marburg.de>
+# 2014-04-28
 # Dieses Werk ist lizenziert unter einer CC-BY-NC-SA Lizenz.
 
 # Sie sollten die Datei auch in Ihren Ordner kopieren und einen Commit machen, 
@@ -130,4 +130,3 @@ print(my.histogram)
 # Sie sind jetzt fertig -- das waren ganz viele Kleinigkeiten, aber
 # Kleinigkeiten, die wir immer wieder nutzen werden. Machen Sie einen Commit und
 # einen Push!
-
