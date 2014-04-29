@@ -1,0 +1,55 @@
+#laden der Datei - und sie gleich als "d" benennen
+d <- read.table("Data//body_dim_long.tab", header=TRUE)
+d
+#Zusammenfassung der Datei
+summary(d)
+
+# mit $ wird eine Spalte ausgewählt
+as.factor(d$subj)
+
+#
+d$subj <- as.factor(d$subj)
+
+# als Balkendiagramm:
+# Größe
+hist(d$height)
+# Gewicht
+hist(d$weight)
+# wie viele unterschiedliche Werte gibt es eigentlich bei Gewicht?
+diff(range(d$weight))
+# gibt das Balkendiagramm mit den 45 untersch. Angaben wieder
+hist(d$weight, breaks=45)
+
+# anderer Plot - Liniendiagramm
+plot(density(d$weight))
+
+# nur die Frauen rausnehmen
+women <- subset(d, sex=="f")
+# Zusammenfassung der Daten zu Frauen:
+summary(women)
+# Barplot des Gewichts der Gruppe "Frau"
+hist( women$weight, breaks=diff(range(women$weight)) )
+# und nochmal mit Farbe :)
+hist( women$weight, breaks=diff(range(women$weight)),col=rainbow(range(women$weight)) )
+# Kurvendiagramm 
+plot(density(women$weight))
+
+# andere Art, Grafiken zu erstellen - mit GGPlot
+library(ggplot2)
+# ggplot(data=d)  --> erstelle einen Plot mit den Daten "d"
+  # + geom_density(aes(x=weight)) --> lege einen Layer darüber: zeige die Geometrie von Density an
+    # ästhetik/Aussehen: auf X-Achse soll Gewicht aufgetragen werden
+ggplot(data=d) + geom_density(aes(x=weight))
+# fast der gleiche Plot - aber die Angaben sollen nach Geschlechtern getrennt, und dies farblich markiert werden
+ggplot(data=d) + geom_density(aes(x=weight, color=sex))
+# Diagramm als Histogramm:
+  # fill --> Feldfarbe
+  # color --> Linienfarbe
+ggplot(data=d) + geom_histogram(aes(x=weight), fill="white", color="black")
+# Histogramm mit Density kombinieren!
+  # bei Histogramm den Zusatz "y=..density.." geben --> Y-Wert dem von Density anpassen
+ggplot(data=d) + geom_histogram(aes(x=weight,y=..density..), fill="white", color="black") + geom_density(aes(x=weight), color="red", fill="blue", alpha=0.6)
+
+# nun schauen wir uns wieder die Größe an....
+  # 
+ggplot(data=d) + geom_density(aes(x=height, color=sex, fill=sex), alpha=.5)
