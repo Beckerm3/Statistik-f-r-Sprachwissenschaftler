@@ -1,0 +1,15 @@
+
+#mean = Mittelwert bestimmen
+# um Infos zu einem Befehl zu bekommen: ? vorstellen
+?mean
+# sqrt = Square-Root
+sqrt(1)
+first_vector <- c(1,2,3,4,5,6)
+# Faul-Tipp: 1. Buchstaben eingeben und dann TAB drücken ;)
+first_vector
+second_vector <- c(1,2,3456789)
+sqrt(first_vector)
+mean(first_vector)
+
+#mode = welche Datenart ist X?
+mode(second_vector)
