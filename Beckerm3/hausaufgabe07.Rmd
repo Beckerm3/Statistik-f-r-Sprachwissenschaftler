@@ -182,16 +182,27 @@ Bei diesem Dozenten ist die Verwaltung wirklich unsicher, ob und was für einen 
 
 In einem kleinen Seminar mit 7 Studenten beträgt der Durchschnittswert 10. Unterscheidet sich der Notenspiegel von dem idealen? Berechnen Sie den $z$-Test
 
+# z= wurzel(n)*((Mittelwert-alter Mittelwert)/Stabw.)
+n <- 7
+x <- 10
+x.a <- 8
+Stabw <- 3
+z <- sqrt(n)*((x-x.a)/Stabw)
+print(z)
 
-code_hier
-
-Das ist ein **_eins_von_signifikanter_insignifikanter_** Unterschied. 
+Das ist ein **insignifikanter** Unterschied. (Z-Wert kleiner als zweiseitiger Z-Test)
 
 In einer Vorlesung vom selben Dozenten mit 50 Teilnehmern beträgt der Durchschnittswert wieder 10. (Es scheint, dass der Dozent 10 besonders toll findet.) Berechnen Sie den $z$-Test:
 
-code_hier
+# z= wurzel(n)*((Mittelwert-alter Mittelwert)/Stabw.)
+n <- 50
+x <- 10
+x.a <- 8
+Stabw <- 3
+z <- sqrt(n)*((x-x.a)/Stabw)
+print(z)
 
-Das ist ein **_eins_von_signifikanter_insignifikanter_** Unterschied. 
+Das ist ein **insignifikanter** Unterschied. (Z-Wert größer als zweiseitiger z-Test)
 
 Ist die Benotung vom Dozenten weniger als ideal? 
 
@@ -202,17 +213,30 @@ In einem mittelgroßen Seminar mit 20 Studenten beträgt der Durchschnittswert 7
 
 Berechnen Sie den $z$-Test:
 
-code_hier
+# z= wurzel(n)*((Mittelwert-alter Mittelwert)/Stabw.)
+n <- 20
+x <- 7
+x.a <- 8
+Stabw <- 3
+z <- sqrt(n)*((x-x.a)/Stabw)
+print(z)
 
-Das ist ein **_eins_von_signifikanter_insignifikanter_** Unterschied. 
+Das ist ein **signifikanter** Unterschied. (Z-Wert kleiner als zweiseitiger Z-Test)
 
 Später ergibt sich, dass es eigentlich 25 Studenten im Kurs gab. (Der Dozent hat "einen Tippfehler" gemacht, als er seine Teilnehmerzahl per Mail an die Verwaltung geschickt hat.) Der Durchschnittswert bleibt -- behauptet der Dozent -- immer noch bei 7. Er behauptet weiterhin, dass das wunderbar nah am Erwartungswert (8) ist, und dass man ihn in Ruhe lassen sollte. Ist er zu streng?
 
 Berechnen Sie den $z$-Test:
 
-code_hier
+# z= wurzel(n)*((Mittelwert-alter Mittelwert)/Stabw.)
+n <- 25
+x <- 7
+x.a <- 8
+Stabw <- 3
+z <- sqrt(n)*((x-x.a)/Stabw)
+print(z)
 
-Das ist ein **_eins_von_signifikanter_insignifikanter_** Unterschied. 
+Das ist ein **signifikanter** Unterschied. (Z-Wert kleiner als zweiseitiger Z-Test)
+
 
 ## Zum Überlegen
 Gibt es einen Grund, weshalb die Noten normal verteilt sein sollten? Warum ist das die übliche Annahme?
