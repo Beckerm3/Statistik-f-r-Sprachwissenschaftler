@@ -24,7 +24,7 @@
 # 8. Vergessen Sie nicht am Ende, die Lizenz ggf. zu ändern!
 
 # Um einiges leichter zu machen, sollten Sie auch die
-# Datei punnkt_rt.tab aus dem Data-Ordner kopieren, stagen und commiten. Sie
+# Datei punkt_rt.tab aus dem Data-Ordner kopieren, stagen und commiten. Sie
 # müssen ggf. Ihr Arbeitsverzeichnis setzen, wenn R die .tab-Datei nicht finden
 # kann: 
 # Session > Set Working Directory > Source File Location
@@ -40,7 +40,7 @@ library(car)
 # car steht übrigens für "Companion to Appled Regression"
 
 # und danach die Daten:
-rt <- read.table("punkt_rt.tab",header=TRUE) 
+rt <-  read.table("Beckerm3/Punkt_rt.tab",header=TRUE) 
 # Die Daten sind Reaktionszeiten von zwei Versuchspersonen auf einen weißen
 # Punkt auf einem schwarzen Bildschirm. Die Verzögerung (delay) zwischen Trials
 # (Läufen) war zufällig und mitaugenommen. 
@@ -50,14 +50,15 @@ rt <- read.table("punkt_rt.tab",header=TRUE)
 # (http://osdoc.cogsci.nl/) auch zu Hause ausführen!)
 
 # Wir schauen uns erst mal eine Zusammenfassung der Daten an:
-# print(summary(rt))
+print(summary(rt))
 
 # Wir sehen sofort, dass R die Variabel "subj" als numerische Variable
 # behandelt hat, obwohl sie eigentlich kategorisch ist. Das müssen wir ändern:
-# rt$subj <- as.factor(rt$subj)
+rt$subj <- as.factor(rt$subj)
+print(summary(rt$subj))
 # 
-# rt.plot <- qplot(x=RT,color=subj,fill=subj,data=rt, geom="density",alpha=I(0.3))
-# print(rt.plot)
+rt.plot <- qplot(x=RT,color=subj,fill=subj,data=rt, geom="density",alpha=I(0.3))
+print(rt.plot)
 
 # Haben die Daten der beiden Gruppen -- die wiederholten Messwerte der einzelnen
 # Probanden bilden ja Gruppen -- homogene Varianz? Bevor Sie irgendwelche Tests 
@@ -69,13 +70,36 @@ rt <- read.table("punkt_rt.tab",header=TRUE)
 # Sie von vorneherein etwas behaupten haben.
 
 # Berechnen Sie jetzt den F-Test:
-#print(CODE_HIER)
+  #RT-Werte von Person 1:
+P1 <- rt[rt$subj == "1", ]$RT
+  #RT-Werte von Person 2:
+P2  <- rt[rt$subj == "2", ]$RT
+  # F-Test
+var.test(P1, P2)
 
 # Sind die Varianzen homogen? Vergessen Sie nicht, dass die Nullhypothese beim
 # F-Test "Varianzen Ungleich" ist.
+df.nenner <- length(Per1$RT) - 1
+df.zaehler <- length(Per2$RT) - 1
+var.nenner <- var(Per1$RT)
+var.zaehler <- var(Per2$RT)
+var.ratio <- var.nenner / var.zaehler
+var.ratio
+  # das Ergebnis von var.ratio ist identisch mit der "ration of variances", 
+  # welche im F-Test (Zeile 78) herausgekommen ist. Daher nehme ich an, dass
+  # die Varianzen homogen sind.
 
 # Berechenen Sie den Levene Test:
-#print(CODE_HIER)
+
+leveneTest(rt$RT ~ rt$subj)
+
+lev.test <- leveneTest(rt$RT ~ rt$subj)
+lev.test$'Pr(>F)'
+lev.test$'Pr(>F)'<0.05
+lev.test$'Pr(>F)'[1]
+lev.test$'Pr(>F)'[1]<0.05
+
+# Wert 1 ist größer als 0,05 (5% ?), daher sind die varianzen nicht homogen
 
 # Sind die Varianzen homogen? Vergessen Sie nicht, dass die Nullhypothese beim
 # Levene Test "Varianzen Gleich" ist.
@@ -84,18 +108,18 @@ rt <- read.table("punkt_rt.tab",header=TRUE)
 # eine Korrektur der Freiheitsgerade macht. Bei homogener Varianz sollten beide
 # Variante ähnliche bzw. (fast) gleiche Ergebnisse liefern. Ist das hier der
 # Fall?
-# two.sample <- CODE_HIER
-# welch <- CODE_HIER
+ two.sample <- t.test(P1, P2) 
+welch <- t.test(P1)
 
-# print(two.sample)
-# print(welch)
+print(two.sample)
+print(welch)
 
 # Das Ergebnis der verschiedenen Test-Funktionen in R ist übrigens eine Liste.
 # Wir können das ausnutzen, um zu schauen, ob es einen Unterschied zwischen den
 # beiden Testverfahren gab. Wenn die Varianz homogen war, sollten wir keinen
 # Unterschied sehen:
-# t.diff <- welch$statistic - two.sample$statistic
-# print(paste("Die Differenz zwischen den beiden t-Werten ist",t.diff,"."))
+t.diff <- welch$statistic - two.sample$statistic
+print(paste("Die Differenz zwischen den beiden t-Werten ist",t.diff,"."))
 
 # Sind die Daten normal verteilt? Wir berechnen Sie den Shapiro Test für erste Versuchsperson:
 # shapiro <- shapiro.test(rt[rt$subj==1,"RT"])
