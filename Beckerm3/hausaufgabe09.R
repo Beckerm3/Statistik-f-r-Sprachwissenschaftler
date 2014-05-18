@@ -43,7 +43,7 @@ library(car)
 rt <-  read.table("Beckerm3/Punkt_rt.tab",header=TRUE) 
 # Die Daten sind Reaktionszeiten von zwei Versuchspersonen auf einen weißen
 # Punkt auf einem schwarzen Bildschirm. Die Verzögerung (delay) zwischen Trials
-# (Läufen) war zufällig und mitaugenommen. 
+# (Läufen) war zufällig und mitaufgenommen. 
 
 # (Wie würden Sie abschneiden? Wenn Sie wollen, können Sie das Experiment (im
 # Data-Ordner) mit Hilfe der open source Software OpenSesame
@@ -55,8 +55,8 @@ print(summary(rt))
 # Wir sehen sofort, dass R die Variabel "subj" als numerische Variable
 # behandelt hat, obwohl sie eigentlich kategorisch ist. Das müssen wir ändern:
 rt$subj <- as.factor(rt$subj)
-print(summary(rt$subj))
-# 
+print(summary(rt)) # Ist identisch mit: table(rt[,"subj"]) 
+
 rt.plot <- qplot(x=RT,color=subj,fill=subj,data=rt, geom="density",alpha=I(0.3))
 print(rt.plot)
 
@@ -68,36 +68,41 @@ print(rt.plot)
 # keine Antwort geben, aber Sie sollten schon auf ein Stück Schmierpapier schreiben,
 # was Sie da denken. Sie können dann nämlich sich selber nicht täuschen, dass
 # Sie von vorneherein etwas behaupten haben.
+  # ich muss zwar nicht, aber ich kann hier ja auch ne Notiz reinmachen:
+    # idealverteilt ist keine der Kurven; Wenn man es nicht so genau nimmt, scheint 
+    # zumindest, dass Subj1 "relativ" normal verteilt ist - bei "Subj2" kann man das 
+    # garnicht sagen - dort ist die rechte Seite abgeschnitten.
 
 # Berechnen Sie jetzt den F-Test:
-  #RT-Werte von Person 1:
-P1 <- rt[rt$subj == "1", ]$RT
-  #RT-Werte von Person 2:
-P2  <- rt[rt$subj == "2", ]$RT
-  # F-Test
-var.test(P1, P2)
+  #Reaktionszeiten der beiden Personen:
+P1.rt <- rt[rt$subj == "1", "RT"]   
+P2.rt  <- rt[rt$subj == "2", "RT"]   
+
+# F-Test
+var.test(P1.rt, P2.rt)
 
 # Sind die Varianzen homogen? Vergessen Sie nicht, dass die Nullhypothese beim
 # F-Test "Varianzen Ungleich" ist.
-df.nenner <- length(Per1$RT) - 1
-df.zaehler <- length(Per2$RT) - 1
-var.nenner <- var(Per1$RT)
-var.zaehler <- var(Per2$RT)
+df.nenner <- length(P1.rt) - 1
+df.zaehler <- length(P2.rt) - 1
+var.nenner<- var(P1.rt)
+var.zaehler <- var(P2.rt)
 var.ratio <- var.nenner / var.zaehler
 var.ratio
-  # das Ergebnis von var.ratio ist identisch mit der "ration of variances", 
+pf(var.ratio, df1 = df.nenner, df2 = df.zaehler, lower.tail=F)*2
+# das Ergebnis von var.ratio ist identisch mit der "ration of variances", 
   # welche im F-Test (Zeile 78) herausgekommen ist. Daher nehme ich an, dass
   # die Varianzen homogen sind.
 
 # Berechenen Sie den Levene Test:
-
 leveneTest(rt$RT ~ rt$subj)
 
 lev.test <- leveneTest(rt$RT ~ rt$subj)
-lev.test$'Pr(>F)'
-lev.test$'Pr(>F)'<0.05
+# lev.test$'Pr(>F)'
+lev.test$'Pr(>F)'>0.05
 lev.test$'Pr(>F)'[1]
-lev.test$'Pr(>F)'[1]<0.05
+lev.test$'Pr(>F)'[1]>0.05 # 
+
 
 # Wert 1 ist größer als 0,05 (5% ?), daher sind die varianzen nicht homogen
 
@@ -108,8 +113,8 @@ lev.test$'Pr(>F)'[1]<0.05
 # eine Korrektur der Freiheitsgerade macht. Bei homogener Varianz sollten beide
 # Variante ähnliche bzw. (fast) gleiche Ergebnisse liefern. Ist das hier der
 # Fall?
- two.sample <- t.test(P1, P2) 
-welch <- t.test(P1)
+two.sample <- t.test(P1.rt, P2.rt) 
+welch <- t.test(P1.rt)
 
 print(two.sample)
 print(welch)
@@ -149,25 +154,48 @@ if (shapiro2$p.value > 0.05){
 
 rt$logRT <- log(rt$RT)
 print(summary(rt$logRT))
-logrt.plot <- qplot(rt$logRT) #????
+# logrt.plot <- plot(density(rt$logRT)) 
+logrt.plot <- qplot(x=logRT,color=subj,fill=subj,data=rt, geom="density",alpha=I(0.3))
 print(logrt.plot)
 
 # Sieht die Verteilung besser aus? Sind die Varianzen "homogener" geworden? 
 # Berechnen Sie den F-Test und den Levene-Test für die logaritmisch skalierten 
 # Daten. Nach jedem Test sollten Sie auch programmatisch (=durch if-Blöcke)
 # ausdrücken, ob die Varianzen homogen sind.
-
-# CODE_HIER
+  # F-Test
+P1.logrt <- rt[rt$subj == "1", "logRT"]   
+P2.logrt  <- rt[rt$subj == "2", "logRT"]   
+var.test(P1.logrt, P2.logrt)
+  # Levene-Test
+leveneTest(rt$logRT ~ rt$subj)
 
 # Sind die Daten "normaler" gewordern? Berechnen Sie den Shapiro-Test für beide 
 # Gruppen. Nach jeder Gruppe sollten Sie auch programmatisch (=durch if-Blöcke)
 # ausdrücken, ob die Daten normal verteilt sind. 
 # (Für die fortgeschrittenen: hier könnte man auch eine for-Schleife nutzen...)
 
-# CODE_HIER
+shapiroLog1 <- shapiro.test(rt[rt$subj==1,"logRT"])
+print(shapiroLog1)
+if (shapiroLog1$p.value > 0.05){
+  print("Shapiro's test insignikant, die Daten sind normal verteilt.")
+}else{
+  print("Shapiro's test signikant, die Daten sind nicht normal verteilt.")
+}
+
+shapiroLog2 <- shapiro.test(rt[rt$subj==2,"logRT"])
+if (shapiroLog2$p.value > 0.05){
+  print("Shapiro's test insignikant, die Daten sind normal verteilt.")
+}else{
+  print("Shapiro's test signikant, die Daten sind nicht normal verteilt.")
+}
 
 # Hat die logarithmische Transformation insgesamt geholfen? Berechnen Sie zum
 # Schluss den (Welch) t-Test für die logarithmischen Daten. Bekommen Sie das
 # gleiche Ergebnisse wie bei den Ausgangsdaten?
+P1.logRT <- rt[rt$subj == "1", "logRT"]   
+P2.logRT  <- rt[rt$subj == "2", "logRT"]   
+two.sample <- t.test(P1.logRT, P2.logRT) 
+welch <- t.test(P1.logRT)
 
-# CODE_HIER
+print(two.sample)
+print(welch)
