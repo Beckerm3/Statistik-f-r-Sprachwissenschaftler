@@ -1,6 +1,6 @@
 # Hausaufgabe 09
 # Martin Becker <Beckerm3@students.uni-marburg.de>
-# 2014-05-13
+# 2014-05-18
 # Dieses Werk ist lizenziert unter einer CC-BY-NC-SA Lizenz.
 
 
@@ -193,6 +193,7 @@ if (shapiroLog2$p.value > 0.05){
 # Schluss den (Welch) t-Test für die logarithmischen Daten. Bekommen Sie das
 # gleiche Ergebnisse wie bei den Ausgangsdaten?
 P1.logRT <- rt[rt$subj == "1", "logRT"]   
+
 P2.logRT  <- rt[rt$subj == "2", "logRT"]   
 two.sample <- t.test(P1.logRT, P2.logRT) 
 welch <- t.test(P1.logRT)
