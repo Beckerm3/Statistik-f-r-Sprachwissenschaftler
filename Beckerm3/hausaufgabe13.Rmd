@@ -70,6 +70,7 @@ priming.by.subject <- aggregate(RT ~ cond * subj,data=priming,FUN = mean)
 ```
 
 Wir können die Tabelle, die durch entsteht, mit `xtable()` schön drucken. Bemerken Sie dabei, dass wir eine weitere Option (`results='asis'`) beim Code-Block setzen müssen!
+
 ```{r, results='asis'}
 print(xtable(priming.by.subject),type="html",include.rownames=FALSE)
 ```
@@ -89,6 +90,7 @@ print(xtable(priming.by.subject.wide2),type="html",include.rownames=FALSE)
 ```
 
 Welches Format macht am meisten Sinn?
+# ich finde die wide table übersichtlicher, da hier pro Subject "nur" eine Zeile ausgegeben wird. 
 
 Natürlich müssen wir auch die Daten grafisch darstellen:
 ```{r}
@@ -99,23 +101,31 @@ ggplot(data=priming.by.subject) + geom_boxplot(aes(x=cond,y=RT,color=cond,fill=c
 ```
 
 Sind alle Plots gleich gut?
+# ich finde den 2. Plot (jitter) nicht so angenehm, wie das Original. Vor allem der 4. Plot (boxplot) zeigt genauer, wie ähnlich oder nicht ähnlich der Mittelwert der einzelnen Varianten ist.
 
 ### By Item
 Bei "Item" berechnen wir die Mittelwerte aller Trials innerhalb eines Items, d.h. wir nehmen den itemweise Mittelwert über Versuchpersonen hinweg. Dafür können wir `aggregate()` nutzen.
-
+colnames(priming)
 ```{r}
-# priming.by.item <- CODE_HIER
+priming.by.item <- aggregate(RT ~ cond * item,data=priming,FUN = mean)
 ```
 
 Wir wollen auch hier die Daten tabellerisch darstellen. Erstellen Sie eine Tabelle in Wide-Format für die Mittelwerte by Item.
 
-CODE_BLOCK_HIER
-
+```{r, results='asis'}
+priming.by.item.wide1 <- dcast(priming.by.item,item ~ cond, value.var="RT")
+print(xtable(priming.by.item.wide1),type="html",include.rownames=FALSE)
+```
 Und *eine* passende Grafik für die Daten by Item sollten wir auch generieren:
 
-CODE_BLOCK_HIER
+```{r}
+ggplot(data=priming.by.item) + geom_boxplot(aes(x=cond,y=RT,color=cond,fill=cond),alpha=0.5)
+ggplot(data=priming.by.subject) + geom_boxplot(aes(x=cond,y=RT,color=cond,fill=cond),alpha=0.5)
+
+```
 
 Sehen die Daten by Subject und by Item gleich aus? Wie sehen sie im Vergleich zu den Single-Trial-Daten aus?
+# die Mittelwerte scheinen weiter gestreut zu sein.
 
 # Subject- und Item-Analysen
 
@@ -132,6 +142,7 @@ priming.f1 <- ezANOVA(priming
                       , detailed=TRUE
                       )
 ```
+# komische Fehlermeldung...(Warning: Collapsing data to cell means. *IF* the requested effects are a subset of the full design, you must use the "within_full" argument, else results may be inaccurate.)
 
 ### ANOVA
 ```{r, results='asis'}
@@ -207,9 +218,17 @@ print(xtable(priming.f1.englisch.target$ANOVA
 
 # Deutsches Target
 Führen Sie die entsprechende Analyse für deutsches Target aus.
-
-CODE_BLOCK_HIER
-
-
+###
+priming.f1.deutsch.target <- ezANOVA(subset(priming, target == "D")
+                                      , dv=.(RT)
+                                      , wid=.(subj)
+                                      , within=.(prime)
+                                      , detailed=TRUE
+                                      )
+print(xtable(priming.f1.deutsch.target$ANOVA
+             , display=c("s","s","d","d","f","f","f","fg","s","g")
+             , digits=c(0,0,0,0,2,2,2,2,0,2))
+      ,type="html",include.rownames=FALSE)
+###
 # Lizenz
 Dieses Werk ist lizenziert unter einer CC-BY-NC-SA Lizenz.
