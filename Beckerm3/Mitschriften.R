@@ -90,3 +90,45 @@ priming$correct <- as.numeric(priming$correct)
 ezANOVA(priming,dv=.(correct), wid=.(item), within=.(prime,target))
 ezANOVA(subset(priming,target=="D"),dv=.(correct), wid=.(item), within=.(prime))
 ezANOVA(subset(priming,target=="E"),dv=.(correct), wid=.(item), within=.(prime))
+
+
+################
+#### Sitzung ###
+## 03.06.2014 ##
+################
+
+# Heute:
+# lineare Regression
+
+# gute Einfürung
+# Fields (Discovering Statistics Using R), Kap 7 
+
+# Ziel: Devianz (Unterschied zwischen den Punkten) minimieren
+
+Ereignisse      Matrix/Maße      Fehler
+y[i]        =     (model)x[i] + e[i]               (i = unabhängige Variable)
+                                       (e = error, Fehler) 
+
+Datenreihen können auch als Matritzen abgebildet werden
+
+(OT: Möbius Band - ein Zweidimensionales Objekt, das aber 3D aussieht)
+
+Linie/Gerade:
+y= mx+b
+y = b[o]   +   b[i]       x[i]
+  Schnitt-    Anstieg  Unabhängige
+  Punkt                Variable
+
+Wie kann man herausfinden, ob eine Linie die "richtige Welt" auch wiedergibt?
+--> mit dem Fehler!
+    -> F-Test 
+    -> r² = Varianztest (Varianz[Modell] = Varianz[Gesamt] - Varianz[Fehler])
+        
+        SS(ges) = ε([x^_ - x[i])²
+        SS(res) = ε(mod - x[i])²
+        SS(mod) = SS[ges] - SS[res]
+      R² = SS[mod]/SS[ges]
+        -> Prozent Varianz erklärt
+        -> Maß dafür, wie viel Varianz in Y durch Varianz in X erklärt wird.
+            je näher R² in Richtung 1 geht, desto idealer ist die Linie
+            je näher R² in Richtung 0 geht, desto schlechter stellt die Linie die Werte dar (0 ist unmöglich!)
