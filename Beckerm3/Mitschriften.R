@@ -132,3 +132,48 @@ Wie kann man herausfinden, ob eine Linie die "richtige Welt" auch wiedergibt?
         -> Maß dafür, wie viel Varianz in Y durch Varianz in X erklärt wird.
             je näher R² in Richtung 1 geht, desto idealer ist die Linie
             je näher R² in Richtung 0 geht, desto schlechter stellt die Linie die Werte dar (0 ist unmöglich!)
+
+################
+#### Sitzung ###
+## 10.06.2014 ##
+################
+
+# Gewicht als Funktion von Größe
+lm(weight ~ height, women)
+summary(lm(weight ~ height, women))
+
+# Größe als Funktion von Gewicht
+lm(height ~ weight, women)
+summary(lm(height ~ weight, women))
+
+library(ggplot2)
+ggplot(women, aes(x=height, y=weight)) + geom_point() + geom_smooth(method="lm")
+
+# t-Wert ist "Estimate / Standardfehler"
+# Bsp. für height ~ weight:
+    0.287249/0.007588
+
+ggplot(body, aes(x=sex, y=weight)) + geom_point()
+
+summary(lm(weight ~ sex, body))
+
+# ANOVA Zusammenfassung
+summary(aov(weight ~ sex, body))
+  # -> ANOVA ist ein Sonderfall der Regression
+
+factor(body$sex, levels=c("m", "f"))
+body$sex <- factor(body$sex, levels=c("m", "f"))
+summary (lm(weight~sex, body))
+
+summary (lm(weight~height + age, body))
+
+ggplot(body, aes(x=height, y=weight, color=age)) + geom_point() + geom_smooth()
+ggplot(body, aes(x=height, y=weight, color=sex)) + geom_point() + geom_smooth()
+
+summary(lm(weight ~ height * sex, data = body))
+
+
+Man kann durch R-Eigene "Zeichenfunktionen" Annahmen testen:
+lm(weight ~ height, women)
+plot(lm(weight ~ height, women))
+ 
