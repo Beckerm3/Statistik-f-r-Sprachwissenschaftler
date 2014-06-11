@@ -137,6 +137,9 @@ Wie kann man herausfinden, ob eine Linie die "richtige Welt" auch wiedergibt?
 #### Sitzung ###
 ## 10.06.2014 ##
 ################
+colnames(women)
+?women
+women[,2]
 
 # Gewicht als Funktion von Größe
 lm(weight ~ height, women)
