@@ -8,6 +8,7 @@ autosize: false
 opts_chunk$set(cache=TRUE,prompt=TRUE)
 library(knitcitations)
 library(ggplot2)
+library(bibtex)
 library(reshape2)
 cite_options(tooltip = TRUE
              , linked = TRUE
