@@ -168,10 +168,11 @@ head(diamonds, 10)
 
 # Fragestellung
 * Gibt es einen Parameter, der sich besonders deutlich auf den Preis eines Diamanten auswirkt?
-Und zu guter Letzt:
+
+Und zu guter Letzt eine ganz "männliche" Frage *höhö* :
 * Ist der Längste auch der Teuerste?
 
-#Antworten:
+# Antworten:
 * Gibt es einen Parameter, der sich besonders deutlich auf den Preis eines Diamanten auswirkt?
 
 Das Interessante ist hier der obere Preisbereich - daher wird der X-Achsenabschnitt auf die oberen 1000 Einheiten begrenzt (xlim=c(17000,18000) ).
@@ -182,7 +183,9 @@ Untersucht werden sollen folgende Eigenschaften:
 * Color
 * Clarity
 Auf der Y-Achse wird erstmal das Gewicht (Carat) aufgezeigt.
+
 Den Datenpunkte werden unterschiedliche Farben(für Color)/Formen(für Cut)/Größen(für Clarity) zugeteilt. 
+
 Daraus ergibt sich folgende Grafik:
 
 ```r
@@ -202,6 +205,8 @@ Aus dieser Grafik ergibt sich folgendes Ergebnis für die teuersten Diamanten:
 * die klarsten Diamanten (IF) finden sich eher bei den kleineren Diamanten (1-2 ct.)
 * Die Farbe scheint auch etwas mit der Größe des Diamanten zu tun haben. Im unteren ct.-Bereich finden sich vermehrt Diamanten der Farbe "D" und "F", im mittleren Bereich "H" und "G". Der obere Bereich wird dominiert von der Farbe "J"
 * Die Schlifformen sind über den gesamten Bereich verbreitet, wobei "Very Good", "Premium" und "Ideal" offenbar dominieren.
+
+
 
 * Ist der Längste auch der Teuerste? :D
 
@@ -230,6 +235,7 @@ max(diamonds$price)
 ```
 
 Der längste Diamant ist ganz klar nicht der teuerste... Aber er gehört schon eher zu den teureren. 
+
 Da stellt sich die Frage: Gehört er zur top-100 der teuersten Diamanten dieses Datasets?
 
 ```r
@@ -289,12 +295,122 @@ vgl.[, -c(1, 2, 3, 4, 5, 6, 7)]
 ```
 
 Ganz unwissend würde ich hier sagen: FEHLER IM SYSTEM!!!
+
 Die Dimensionen des längsten Diamanten sind 10,74 x 10,54 x 6,98 - das scheint so alles in allem ziemlich ausgeglichen.
 
 Anders jedoch beim breitesten Diamanten: 8,09 x 58,90 x 8,06
 whaaat?! ein 8mm langer, aber fast 6 cm (!) breiter Diamant?!
+
 DEN will ich sehen!
 
 
 Überhaupt kann man hier ins Grübeln kommen: "Was ist schon Breite?" und "Was ist schon Länge?" - bzw. "Warum ist Länge nicht Breite und umgekehrt?!"
+
 Aber solche Fragen wären in einem Philosophiekurs besser aufgehoben als in der Statistik.
+
+-----------------
+
+Um zu schauen, ob hier vllt ein Fehler vorliegt, wäre es schon, auf die Dichte dieser beiden Diamanten zu prüfen....
+
+Machen wir es mal, ohne groß zu überlegen:
+
+Masse der Diamanten (in g):
+
+Breit:
+
+```r
+MBreit <- breit$carat * 0.2
+MBreit
+```
+
+```
+## [1] 0.4
+```
+
+Lang:
+
+```r
+MLang <- lang$carat * 0.2
+MLang
+```
+
+```
+## [1] 1.002
+```
+
+
+Volumen der Diamanten (in cm³):
+
+Breit:
+
+```r
+VolBreit <- (breit$x/10) * (breit$y/10) * (breit$z/10)
+VolBreit
+```
+
+```
+## [1] 3.841
+```
+
+Lang: 
+
+```r
+VolLang <- (lang$x/10) * (lang$y/10) * (lang$z/10)
+VolLang
+```
+
+```
+## [1] 0.7901
+```
+
+
+Dichte der Diamanten (in g/cm³) - Eigentlich sollte es 3,52g/cm³ sein, das ist die Dichte von Diamanten:
+
+(D = m/V):
+Dichte des breiten Diamamanten:
+
+```r
+MBreit/VolBreit
+```
+
+```
+## [1] 0.1042
+```
+
+Dichte des langen Diamamanten:
+
+```r
+MLang/VolLang
+```
+
+```
+## [1] 1.268
+```
+
+Hoppla! Die beiden Angaben weichen aber SEHR von den idealen 3,52g/cm³ ab!
+
+*grübel grübel* Woran könnte das denn liegen?
+
+Haben wir etwa billige Imitate in diesem Datensatz? Wenn ja: Aus welchem Material soll das bestehen?! Da Wasser (1g/cm³ bei 20°C)
+
+Und vor allem: Warum ist das vorher niemandem aufgefallen?!
+
+Ein Blick in die
+[Tabellensammlung Chemie/ Dichte fester Stoffe] (http://de.wikibooks.org/wiki/Tabellensammlung_Chemie/_Dichte_fester_Stoffe) aus der Wikipedia stiftet noch mehr Verwirrung...
+
+Der breiteste Diamant hat eine ähnliche Dichte wie Balsaholz... Der längste Diamant immerhin wie Wasser...
+
+Trotzdem seltsam!
+
+
+Etwas weiter grübeln... 
+
+Was haben wir eigentlich genau berechnet?
+
+Länge x Breite x Tiefe = Volumen...
+
+Das stimmt als Formel --> WENN DIE DIAMANTEN WÜRFEL WÄREN!!!!
+
+Damn! Die Steinchen sind aber keine Würfel - also bringt diese Berechnung nichts!
+
+Naja - was solls... Ich finde ich habe mir trotzdem ne Schoki verdient ;)
