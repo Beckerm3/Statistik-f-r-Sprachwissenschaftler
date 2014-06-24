@@ -59,23 +59,13 @@ Diese Veranstaltung bietet eine praktische Einführung in statistische Verfahren
 |      |                | *Hausaufgabe bis 10.06.2014 10 Uhr:*
 |      |                | 1. `hausaufgabe15.R`
 | 09.  | **09.06.2014** | fällt aus! (Pfingstmontag)
-<<<<<<< HEAD
-|      | **10.06.2014** | lineare Regression II, evtl. Korrelationen  
-| 10.  | **16.06.2014** | Korrelationen I
-=======
 |      | **10.06.2014** | lineare Regression II
 |      |                | *Hausaufgabe bis 16.06.2014 12 Uhr:*
 |      |                | 1. `hausaufgabe16.Rmd`
-<<<<<<< HEAD
-| 10.  | **16.06.2014** | Korrelationen
->>>>>>> ceff52f5bc70ad4c911990a574e70733634fe47d
-|      | **17.06.2014** | das generalisierte lineare Model (GLM), logit-Regression
-=======
 | 10.  | **16.06.2014** | Wiederholung, implizite Darstellung des General Linear Modells (GLM)
 |      | **17.06.2014** | Korrelationen I
 |      |                | *Hausaufgabe bis 23.06.2014 12 Uhr:*
 |      |                | 1. `hausaufgabe18.R`
->>>>>>> 924e2ba06f67fbed0ee50b6496a72b3e2a1ea930
 | 11.  | **23.06.2014** | gemischte Modelle I
 |      | **24.06.2014** | gemischte Modelle II
 | 12.  | **30.06.2014** | $\chi^2$, logLikelihood & Likelihood-Ratio  
