@@ -180,3 +180,95 @@ Man kann durch R-Eigene "Zeichenfunktionen" Annahmen testen:
 lm(weight ~ height, women)
 plot(lm(weight ~ height, women))
  
+################
+#### Sitzung ###
+## 16.06.2014 ##
+################
+
+2 Subsets kann man gleichzeitig erstellen, wenn man sie in der Subset-Umgebung mit einem | trennt:
+  subset(A | B)
+
+
+--> Wie berichtet man einen T- oder f-Wert? 
+Was ist die korrekte Schreibweise?!
+  http://www.statistik-tutorial.de/forum/ftopic4185.html
+  
+  
+Es wird keine Formel abgefragt (man soll grob wissen, wie die Formel aussieht, das reicht)
+t-test = Abweichung(0)/ Standardfehler
+
+
+
+################
+#### Sitzung ###
+## 17.06.2014 ##
+################
+
+Formel von Varianz:
+  (Eta (x(i)-x^_)²) / (n-1)
+    eigentlich ein Durchschnitt der Abweichungen
+
+andere Schreibweise:
+  Eta ((x[i]-x^_)*(x[i]-x^_)) / (n-1)
+
+Vergleich zweier Variablen (Kovariation)
+  Eta ((x[i]-x^_)*(y[i]-y^_)) / (n-1)
+  Die Summe kann auch negativ werden!
+  -> wenn die Varianzen immer in die gleiche Richtung gehen, kommt was positives dabei raus.
+  -> sind die Varianzen von y immer umgekehrt von x sind, kommt was nevatives raus.
+  
+vergleich zweier unterschiedlichen Datensätze (mit untersch. Einheiten):
+  Vergleich der Stabw.
+  -> der Wert kann nie größer als 1 werden
+
+Pearson Product-Moment Correlation
+  -> 
+  
+  
+  Wann ist ein Wert (welcher Wert?) groß oder klein?
+  (Cohen)
+  > 0,1 -> klein
+  > 0,3 -> mittel
+  > 0,5 -> groß
+  wird in ezANOVA angegeben als ges (Generalized Eta Squared)
+          --> Maß für die Effektgröße
+          in EEG Experimenten gibts oft Werte ca. 0,001
+            --> sehr kleine Effektgröße
+      Effektwerte sind ein zuverlässiges Maß für p-Werte.
+        -> sie sind besser vergleichbar als p-Werte
+      wir wollen eigentlich möglichst größere Effektwerte
+
+Fisher-Transformation
+  = wird benutzt, um Standartwerte (Z-Werte) zu standartisieren
+  Z[r] = 1/z * ln ((1+r)/(1.r))
+
+Spearman
+  -> berechnet Korrelation im Bezug auf den Rang (z.B. "wächst das 4.x so an wie das 4. Y?")
+  r[s]
+  Zeichen/Koefizient:  p (Rho!)
+
+
+kurs <- read.table("Beckerm3/body_dim_long.tab", header = T)
+
+
+  # cor=correlation
+cor(kurs$height, kurs$weight, method="pearson")
+
+cor(kurs$height, kurs$weight, method="pearson")**2
+
+cor(kurs$height, kurs$weight, method="spearman")
+# es ist Zufall, dass Pearson*2 zu einem -ähnlichen Ergebnis führt wie Spearman.
+
+library(ggplot2)
+qplot(height, weight, data=kurs) + geom_smooth(method="lm")
+
+  # COR-TEST:
+    # gibt auch Koeffizienzinterval wieder
+cor.test(kurs$height, kurs$weight, method="pearson")
+cor.test(kurs$height, kurs$weight, method="spearman")
+  # spearman klappt nicht, weil es mind 2 Personen gibt, die die gleiche Größe oder Masse haben.
+    # daher ist der P-Wert nicht vertrauenswürdig.
+    # Phillip würde eher das Konfidenzinterval angeben statt des P-Werts
+
+cor.test(kurs$height, kurs$weight, method="kendall")
+  Zeichen/Koeffizient: Tau
